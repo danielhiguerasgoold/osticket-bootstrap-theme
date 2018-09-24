@@ -1,15 +1,3 @@
-<?php
-    // Form headline and deck with a horizontal divider above and an extra
-    // space below.
-    // XXX: Would be nice to handle the decoration with a CSS class
-	//echo "Panel:" . $form->getTitle() . "-" . $form->getid();
-   /*     $defaultform ='';
-    foreach (DynamicForm::objects()
-               ->order_by('id', 'title') as $form) {
-                // echo $form->get('id') . $form->get('title');
-                if ($form->get('id') == 2) $defaultform = $form->get('title');
-    }*/ 
-    ?>
 <script type="text/javascript">
 $(document).ready(function(){
     $('[data-toggle="popover"]').popover({
@@ -17,19 +5,11 @@ $(document).ready(function(){
         placement : 'top',
         trigger : 'hover'
     });
-	
-	//$("input").each(function () {
-    //$(this).addClass("form-control");
-	//$(':input,:checkbox,:radio').addClass('YOUR_CLASSNAME');
+
 	$('input[type=text]').addClass('form-control');
 	$('select').addClass('form-control');
 });
-/*$("[data-toggle=popover]").popover({
-    html: true, 
-	content: function() {
-          return $('#popover-content').html();
-        }
-});*/
+
 </script>
  <div class="panel panel-default">
     <div class="panel-heading">
@@ -43,7 +23,7 @@ $(document).ready(function(){
     </div>
     <div class="panel-body">
     <?php
-	if ($form->getTitle() == 'Additional Details' || $form->getTitle() == 'Contact Details'){
+	if ($form->getTitle() == 'Additional Details' || $form->getTitle() == 'Contact Details' || $form->getTitle() == 'Ticket Details'){
 		echo '<div class="form">';
 	} else {
 		echo '<div class="form-inline">';

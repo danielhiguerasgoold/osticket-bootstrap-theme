@@ -87,44 +87,25 @@ if ($thisclient && $thisclient->isGuest()
 	 </div>
 </div>
 <div class="row">
-<div class="col-md-12">
-<!-- Custom Data -->
-<?php
-$sections = array();
-foreach (DynamicFormEntry::forTicket($ticket->getId()) as $i=>$form) {
-    // Skip core fields shown earlier in the ticket view
-    $answers = $form->getAnswers()->exclude(Q::any(array(
-        'field__flags__hasbit' => DynamicFormField::FLAG_EXT_STORED,
-        'field__name__in' => array('subject', 'priority'),
-        Q::not(array('field__flags__hasbit' => DynamicFormField::FLAG_CLIENT_VIEW)),
-    )));
-	//echo "TEMP".json_encode($answers);
-    // Skip display of forms without any answers
-    foreach ($answers as $j=>$a) {
-        if ($v = $a->display())
-            $sections[$i][$j] = array($v, $a);
-    }
-}
-/*foreach ($sections as $i=>$answers) {
-    ?>
-        <div class="col-md-4 row">
-        <div><h3><?php echo $form->getTitle(); ?></h3></div>
+    <div class="col-md-12">
+        <!-- Custom Data -->
+        <?php
+        $sections = array();
+        foreach (DynamicFormEntry::forTicket($ticket->getId()) as $i=>$form) {
+            // Skip core fields shown earlier in the ticket view
+            $answers = $form->getAnswers()->exclude(Q::any(array(
+                'field__flags__hasbit' => DynamicFormField::FLAG_EXT_STORED,
+                'field__name__in' => array('subject', 'priority'),
+                Q::not(array('field__flags__hasbit' => DynamicFormField::FLAG_CLIENT_VIEW)),
+            )));
 
-        <?php foreach($answers as $a) {
-            if (!($v = $a->display())) continue; ?>
-            <div>
-                <label><?php
-    echo $a->getField()->get('label');
-                ?>:</label>
-               <?php
-    echo $v;
-                ?>
-            
-            <?php } ?>
-			</div>
-    <?php
-    $idx++;
-}*/ ?></br>
+            // Skip display of forms without any answers
+            foreach ($answers as $j=>$a) {
+                if ($v = $a->display())
+                    $sections[$i][$j] = array($v, $a);
+            }
+        } ?>
+        </br>
 	</div>
 </div>
 </div>
@@ -137,7 +118,6 @@ foreach (DynamicFormEntry::forTicket($ticket->getId()) as $i=>$form) {
                 'html-id' => 'ticketThread')
             );
 ?>
-
 
 <?php if($errors['err']) { ?>
     <div id="error" class="alert alert-danger"><?php echo $errors['err']; ?></div>

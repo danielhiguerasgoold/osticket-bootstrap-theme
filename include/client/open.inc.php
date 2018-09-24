@@ -70,7 +70,7 @@ if ($info['topicId'] && ($topic=Topic::lookup($info['topicId']))) {
                     <?php
                     } ?>
                 </select>
-                <font class="error"><?php echo $errors['topicId']; ?></font>
+                <span class="error"><?php echo $errors['topicId']; ?></span>
             </div>
         </div>
     <div id="dynamic-form">
@@ -78,37 +78,46 @@ if ($info['topicId'] && ($topic=Topic::lookup($info['topicId']))) {
             include(CLIENTINC_DIR . 'templates/dynamic-form.tmpl.php');
         } ?>
     </div>
-    <tbody>
+
     <?php
     if($cfg && $cfg->isCaptchaEnabled() && (!$thisclient || !$thisclient->isValid())) {
         if($_POST && $errors && !$errors['captcha'])
             $errors['captcha']=__('Please re-enter the text again');
         ?>
-    <tr class="captchaRow">
-        <td class="required"><?php echo __('CAPTCHA Text');?>:</td>
-        <td>
-            <span class="captcha"><img src="captcha.php" border="0" align="left"></span>
-            &nbsp;&nbsp;
-            <input id="captcha" type="text" name="captcha" size="6" autocomplete="off">
-            <em><?php echo __('Enter the text shown on the image.');?></em>
-            <font class="error">*&nbsp;<?php echo $errors['captcha']; ?></font>
-        </td>
-    </tr>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="captchaRow">
+                    <span class="required"><?php echo __('CAPTCHA Text');?>:</span>
+                    <span>
+                        <span class="captcha"><img src="captcha.php" border="0" align="left"></span>
+                        &nbsp;&nbsp;
+                        <input id="captcha" type="text" name="captcha" size="6" autocomplete="off">
+                        <small><?php echo __('Enter the text shown on the image.');?></small>
+                        <span class="error">*&nbsp;<?php echo $errors['captcha']; ?></span>
+                    </span>
+                </div>
+            </div>
+        </div>
     <?php
     } ?>
-   
-    </tbody>
-  </table>
-  <p class="buttons" >
-        <input class="btn btn-success" type="submit" value="<?php echo __('Create Ticket');?>">
-        <input class="btn btn-warning" type="reset" name="reset" value="<?php echo __('Reset');?>">
-        <input class="btn btn-default" type="button" name="cancel" value="<?php echo __('Cancel'); ?>" onclick="javascript:
-            $('.richtext').each(function() {
-                var redactor = $(this).data('redactor');
-                if (redactor && redactor.opts.draftDelete)
-                    redactor.deleteDraft();
-            });
-            window.location.href='index.php';">
-  </p>
+    <br />
+    <div class="row">
+        <div class="col-md-2 col-sm-12">
+            <input class="btn btn-success btn-block col-md-2 col-sm-12" type="submit" value="<?php echo __('Create Ticket');?>">
+        </div>
+        <div class="col-md-2 col-sm-12">
+            <input class="btn btn-warning btn-block col-md-2 col-sm-12" type="reset" name="reset" value="<?php echo __('Reset');?>">
+        </div>
+        <div class="col-md-2 col-sm-12">
+            <input class="btn btn-default btn-block col-md-2 col-sm-12" type="button" name="cancel" value="<?php echo __('Cancel'); ?>" onclick="javascript:
+                $('.richtext').each(function() {
+                    var redactor = $(this).data('redactor');
+                    if (redactor && redactor.opts.draftDelete)
+                        redactor.deleteDraft();
+                });
+                window.location.href='index.php';">
+        </div>
+    </div>
 </form>
 <div class="clearfix"></div>
