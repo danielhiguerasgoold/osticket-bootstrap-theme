@@ -10,8 +10,12 @@ if($thisclient && $thisclient->isValid()) {
 $info=($_POST && $errors)?Format::htmlchars($_POST):$info;
 
 $form = null;
-if (!$info['topicId'])
-    $info['topicId'] = $cfg->getDefaultTopicId();
+if (!$info['topicId']) {
+    if (array_key_exists('topicId',$_GET) && preg_match('/^\d+$/',$_GET['topicId']) && Topic::lookup($_GET['topicId']))
+        $info['topicId'] = intval($_GET['topicId']);
+    else
+        $info['topicId'] = $cfg->getDefaultTopicId();
+}
 
 $forms = array();
 if ($info['topicId'] && ($topic=Topic::lookup($info['topicId']))) {
@@ -37,15 +41,29 @@ if ($info['topicId'] && ($topic=Topic::lookup($info['topicId']))) {
   <?php csrf_token(); ?>
   <input type="hidden" name="a" value="open">
 
-        <div class="panel panel-default">
+        <?php
+        if (!$thisclient) {
+            $uform = UserForm::getUserForm()->getForm($_POST);
+            if ($_POST) $uform->isValid();
+            $uform->render(false);
+        } else { ?>
+            <tr><td colspan="2"><hr /></td></tr>
+            <tr><td><?php echo __('Email'); ?>:</td><td><?php
+                    echo $thisclient->getEmail(); ?></td></tr>
+            <tr><td><?php echo __('Client'); ?>:</td><td><?php
+                    echo Format::htmlchars($thisclient->getName()); ?></td></tr>
+        <?php } ?>
 
+        <div class="panel panel-default">
             <div class="panel-heading">
+
 			<div class="form-header" style="margin-bottom:0.5em">
                 <h3 class="panel-title"> <?php echo __('Help Topic');?> </h3>
 				</div>
                 <em>  <?php echo __('Select the Relevant Topic');?>  </em>
             </div>
             <div class="panel-body">
+
                 <select class="form-control" id="topicId" name="topicId" onchange="javascript:
                         var data = $(':input[name]', '#dynamic-form').serialize();
                         $.ajax(

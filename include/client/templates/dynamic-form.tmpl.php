@@ -7,6 +7,8 @@ $(document).ready(function(){
     });
 
 	$('input[type=text]').addClass('form-control');
+    $('input[type=email]').addClass('form-control');
+    $('input[type=tel]').addClass('form-control');
 	$('select').addClass('form-control');
 });
 
@@ -33,6 +35,7 @@ $(document).ready(function(){
     // 'private' are not included in the output for clients
     global $thisclient;
     foreach ($form->getFields() as $field) {
+
         if (isset($options['mode']) && $options['mode'] == 'create') {
             if (!$field->isVisibleToUsers() && !$field->isRequiredForUsers())
                 continue;
@@ -41,31 +44,23 @@ $(document).ready(function(){
             continue;
         }
         ?>
-		
-        <!--<div class="form-group col-md-12"> -->
-        <div class="form-group"> 
-		    <!--<button type="button" class="btn btn-primary" data-toggle="popover" title="Popover title" data-content="Default popover">Popover</button>-->
+
+        <div class="form-group">
             <?php if (!$field->isBlockLevel()) { ?>
-                <div class="field-label"><label data-toggle="popover" title="<?php if ($field->get('hint')) echo Format::htmlchars($field->getLocal('label')); ?>" data-content="<?php echo ($field->getLocal('hint'))?>" for="<?php echo $field->getFormName(); ?>"><span class="<?php
-                    if ($field->isRequiredForUsers()) echo 'required'; ?>">
-                <?php echo Format::htmlchars($field->getLocal('label')); ?>
-            <?php if ($field->isRequiredForUsers()) { ?>
-            <span class="error">*</span>
-            <?php }
-            ?>
-			</label></div>
-			</span><?php
-                //if ($field->get('hint')) { ?>
-                    <!--em style="color:gray;display:inline-block"><?php
-                        //echo Format::viewableImages($field->getLocal('hint')); ?></em>-->
-						
-                <?php
-               // } ?>
+                <div class="field-label">
+                    <label data-toggle="popover" title="<?php if ($field->get('hint')) echo Format::htmlchars($field->getLocal('label')); ?>" data-content="<?php echo ($field->getLocal('hint'))?>" for="<?php echo $field->getFormName(); ?>">
+                        <span class="<?php if ($field->isRequiredForUsers()) echo 'required'; ?>"></span>
+                        <?php echo Format::htmlchars($field->getLocal('label')); ?>
+                        <?php if ($field->isRequiredForUsers()) { ?>
+                            <span class="error">*</span>
+                        <?php } ?>
+			        </label>
+                </div>
             <?php
             }
-			//Renders Forms
-			?><div class="field-form"><?php
-            $field->render(array('client'=>true));?>
+            ?>
+            <div class="field-form"><?php
+                $field->render(array('client'=>true));?>
 			</div><?php
             ?></label><?php
             foreach ($field->errors() as $e) { ?>
